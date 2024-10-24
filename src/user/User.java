@@ -1,13 +1,10 @@
 package user;
 
-import resource_management.Resource;
 import resource_management.ResourceManager;
 import utils.EncryptionUtil;
-
 import javax.crypto.SecretKey;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class User implements Serializable {
     private String username;

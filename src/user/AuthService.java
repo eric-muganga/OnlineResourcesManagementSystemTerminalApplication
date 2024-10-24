@@ -1,10 +1,7 @@
 package user;
 
 import utils.FileHandler;
-
 import javax.crypto.SecretKey;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AuthService {

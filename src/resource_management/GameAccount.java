@@ -1,8 +1,12 @@
 package resource_management;
 
 public class GameAccount extends Resource {
+
     private String gamePlatform;
 
+    public String getGamePlatform() {
+        return gamePlatform;
+    }
     public GameAccount(String name, String username, String password,String gamePlatform) {
         super(name, username, password);
         this.gamePlatform = gamePlatform;

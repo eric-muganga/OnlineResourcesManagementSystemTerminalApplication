@@ -110,7 +110,8 @@ public class Main {
             System.out.println("2. Add Resource");
             System.out.println("3. Find Resource");
             System.out.println("4. Remove Resource");
-            System.out.println("5. Logout");
+            System.out.println("5. Edit Resource");
+            System.out.println("6. Logout");
 
             System.out.println("Select an option: ");
             int choice;
@@ -128,12 +129,17 @@ public class Main {
                         break;
                     case 3:
                         System.out.println("Finding a resource for " + user.getUsername());
-
+                        findResourceMenu(scanner,resourceManager);
                         break;
                     case 4:
                         System.out.println("Removing a resource for " + user.getUsername());
+                        removeResourceMenu(scanner, resourceManager);
                         break;
                     case 5:
+                        System.out.println("Edit a resource for " + user.getUsername());
+                        editResourceMenu(scanner, resourceManager,user);
+                        break;
+                    case 6:
                         System.out.println("Logging out....");
                         return;
                     default:
@@ -171,7 +177,6 @@ public class Main {
             System.out.println("Invalid option. Please enter a number.");
         }
     }
-
 
 
     private static void addGameAccount(Scanner scanner, ResourceManager resourceManager, User user) {
@@ -233,17 +238,15 @@ public class Main {
     private static void findResourceMenu(Scanner scanner, ResourceManager resourceManager) {
         System.out.println("\n--- Find Resource ---");
 
-        // Prompt user for the name of the resource they want to find
         System.out.println("Enter the name of the resource to find: ");
         String resourceName = scanner.nextLine();
 
-        // Use ResourceManager to find the resource by name
         Resource foundResource = resourceManager.getResource(resourceName);
 
-        // Check if resource was found
+
         if (foundResource != null) {
             System.out.println("Resource found:");
-            foundResource.displayInfo(); // Display the details of the found resource
+            foundResource.displayInfo();
         } else {
             System.out.println("No resource found with the name: " + resourceName);
         }
@@ -269,4 +272,69 @@ public class Main {
     }
 
 
+    private static void editResourceMenu(Scanner scanner, ResourceManager resourceManager, User user) {
+        System.out.println("\n--- Edit Resource ---");
+
+        resourceManager.getResources().forEach(Resource::displayInfo);
+
+        System.out.println("Enter the name of the resource to edit: ");
+        String resourceName = scanner.nextLine();
+        Resource resourceToEdit = resourceManager.getResource(resourceName);
+        if (resourceToEdit != null) {
+            if (resourceToEdit instanceof GameAccount) {
+                System.out.println("Edit a GameAccount: " );
+
+                System.out.println("Enter new Game Name (current: " + resourceToEdit.getName() + "): ");
+                String newGameName = scanner.nextLine();
+                if (!newGameName.isEmpty() && !newGameName.equals(resourceToEdit.getName())) {
+                    resourceToEdit.setName(newGameName);
+                }
+
+                System.out.println("Enter new Username (current: " + resourceToEdit.getUsername()+ "): ");
+                String newUsername = scanner.nextLine();
+                if (!newUsername.isEmpty() && !newUsername.equals(resourceToEdit.getUsername())) {
+                    resourceToEdit.setUsername(newUsername);
+                }
+
+                System.out.println("Enter new Password (current: " + resourceToEdit.getPassword() + "): ");
+                String newPassword = scanner.nextLine();
+                if (!newPassword.isEmpty() && !newPassword.equals(resourceToEdit.getPassword())) {
+                    resourceToEdit.setPassword(newPassword);
+                }
+
+                System.out.println("Game account updated successfully.");
+
+
+            } else if (resourceToEdit instanceof Subscription) {
+                System.out.println("Editing a Subscription");
+
+
+                System.out.println("Enter new Subscription Name (current: " + resourceToEdit.getName() + "): ");
+                String newSubscriptionName = scanner.nextLine();
+                if (!newSubscriptionName.isEmpty() && !newSubscriptionName.equals(resourceToEdit.getName())) {
+                    resourceToEdit.setName(newSubscriptionName);
+                }
+
+                System.out.println("Enter new Username (current: " + resourceToEdit.getUsername() + "): ");
+                String newUsername = scanner.nextLine();
+                if (!newUsername.isEmpty() && !newUsername.equals(resourceToEdit.getUsername())) {
+                    resourceToEdit.setUsername(newUsername);
+                }
+
+                System.out.println("Enter new Password (current: " + resourceToEdit.getPassword() + "): ");
+                String newPassword = scanner.nextLine();
+                if (!newPassword.isEmpty() && !newPassword.equals(resourceToEdit.getPassword())) {
+                    resourceToEdit.setPassword(newPassword);
+                }
+
+
+                System.out.println("Subscription updated successfully.");
+            }
+
+            FileHandler.saveUserResourcesToFile(user);
+
+        }else {
+            System.out.println("No resource found with the name: " + resourceName);
+        }
+    }
 }

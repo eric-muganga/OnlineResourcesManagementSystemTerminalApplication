@@ -27,4 +27,5 @@ public class ResourceManager implements Serializable {
     public Resource getResource(String resourceName) {
         return resources.stream().filter(resource -> resource.name.equals(resourceName)).findFirst().orElse(null);
     }
+
 }
